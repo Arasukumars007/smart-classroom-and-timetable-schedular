@@ -35,7 +35,16 @@ class Settings(BaseSettings):
 
     def __init__(self, **values):
         super().__init__(**values)
-        if self.DATABASE_URL.startswith("sqlite"):
+        # Fix Render PostgreSQL URL: convert postgresql:// → postgresql+asyncpg://
+        if self.DATABASE_URL.startswith("postgresql://"):
+            self.DATABASE_URL = self.DATABASE_URL.replace(
+                "postgresql://", "postgresql+asyncpg://", 1
+            )
+        elif self.DATABASE_URL.startswith("postgres://"):
+            self.DATABASE_URL = self.DATABASE_URL.replace(
+                "postgres://", "postgresql+asyncpg://", 1
+            )
+        elif self.DATABASE_URL.startswith("sqlite"):
             # Resolve relative path to absolute path relative to the backend directory
             db_file = self.DATABASE_URL.split("///")[-1].replace("./", "")
             abs_db_path = os.path.join(backend_dir, db_file).replace("\\", "/")
