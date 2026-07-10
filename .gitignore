@@ -1,0 +1,39 @@
+# Python virtual environments and caches
+**/venv/
+**/.venv/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Database files
+*.db
+*.sqlite3
+backend/smart_classroom.db
+
+# Node.js dependencies and build folders
+**/node_modules/
+**/dist/
+**/build/
+.svelte-kit/
+.next/
+
+# Local Environment/Credential Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env
+
+# System & Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+Thumbs.db
+.DS_Store
