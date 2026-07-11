@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
+  // Base path for GitHub Pages — must match your repo name exactly
+  base: '/smart-classroom-and-timetable-schedular/',
   plugins: [react()],
   resolve: {
     alias: {
