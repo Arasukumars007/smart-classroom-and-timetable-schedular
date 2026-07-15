@@ -10,6 +10,8 @@ MAX_RETRIES=30
 RETRY_INTERVAL=3
 
 echo "⏳ Waiting for database to be ready..."
+# Debug: show what DATABASE_URL host we are targeting (password masked)
+echo "  → DATABASE_URL = $(echo $DATABASE_URL | sed 's/:\/\/[^:]*:[^@]*@/\/\/***:***@/')"
 
 for i in $(seq 1 $MAX_RETRIES); do
     python -c "
