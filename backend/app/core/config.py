@@ -27,11 +27,19 @@ class Settings(BaseSettings):
     # CORS
     BACKEND_CORS_ORIGINS: str = '["http://localhost:3000","http://localhost:8000"]'
 
+    # Public URL of the deployed frontend (e.g. https://smart-classroom.onrender.com)
+    # Set this as a runtime environment variable on your PaaS host.
+    FRONTEND_URL: str = ""
+
     def get_cors_origins(self) -> List[str]:
         try:
-            return json.loads(self.BACKEND_CORS_ORIGINS)
+            origins = json.loads(self.BACKEND_CORS_ORIGINS)
         except Exception:
-            return ["http://localhost:3000"]
+            origins = ["http://localhost:3000"]
+        # Dynamically add the deployed frontend URL when running on PaaS
+        if self.FRONTEND_URL and self.FRONTEND_URL not in origins:
+            origins.append(self.FRONTEND_URL)
+        return origins
 
     def __init__(self, **values):
         super().__init__(**values)
