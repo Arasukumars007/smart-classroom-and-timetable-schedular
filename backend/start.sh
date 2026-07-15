@@ -19,14 +19,22 @@ import asyncio, asyncpg, os, sys
 
 async def check():
     url = os.environ.get('DATABASE_URL', '')
-    # asyncpg expects postgresql:// not postgresql+asyncpg://
-    url = url.replace('postgresql+asyncpg://', 'postgresql://').replace('postgres://', 'postgresql://')
-    try:
-        conn = await asyncpg.connect(url)
-        await conn.close()
-    except Exception as e:
-        print(f'  Not ready: {e}', file=sys.stderr)
+    if not url:
+        print('ERROR: DATABASE_URL is not set!', file=sys.stderr)
         sys.exit(1)
+    # Strip SQLAlchemy driver prefix and query params for asyncpg raw check
+    base_url = url.split('?')[0]
+    base_url = base_url.replace('postgresql+asyncpg://', 'postgresql://').replace('postgres://', 'postgresql://')
+    # Try SSL first (required for Render external connections), then plain
+    for ssl_mode in ('require', False):
+        try:
+            conn = await asyncpg.connect(dsn=base_url, ssl=ssl_mode)
+            await conn.close()
+            sys.exit(0)
+        except Exception as e:
+            last_err = e
+    print(f'  Not ready: {last_err}', file=sys.stderr)
+    sys.exit(1)
 
 asyncio.run(check())
 " && echo "✅ Database is ready!" && break

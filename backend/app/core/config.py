@@ -43,6 +43,7 @@ class Settings(BaseSettings):
 
     def __init__(self, **values):
         super().__init__(**values)
+
         # Fix Render PostgreSQL URL: convert postgresql:// → postgresql+asyncpg://
         if self.DATABASE_URL.startswith("postgresql://"):
             self.DATABASE_URL = self.DATABASE_URL.replace(
@@ -57,6 +58,17 @@ class Settings(BaseSettings):
             db_file = self.DATABASE_URL.split("///")[-1].replace("./", "")
             abs_db_path = os.path.join(backend_dir, db_file).replace("\\", "/")
             self.DATABASE_URL = f"sqlite+aiosqlite:///{abs_db_path}"
+
+        # Add SSL for non-local PostgreSQL (required by Render, Supabase, Neon, etc.)
+        # asyncpg uses ?ssl=require (not sslmode=require which is psycopg2-style)
+        if self.DATABASE_URL.startswith("postgresql+asyncpg://"):
+            local_hosts = ("localhost", "127.0.0.1", "postgres", "db")
+            host_part = self.DATABASE_URL.split("@")[-1].split("/")[0].split(":")[0]
+            if host_part not in local_hosts:
+                if "?" not in self.DATABASE_URL:
+                    self.DATABASE_URL += "?ssl=require"
+                elif "ssl=" not in self.DATABASE_URL:
+                    self.DATABASE_URL += "&ssl=require"
 
     class Config:
         env_file = env_file_path
