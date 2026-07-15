@@ -15,8 +15,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Ensure the startup script has Unix line endings and is executable
+RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
+
 EXPOSE 8000
 
-# Run migrations, seed sample data (skipped if already seeded), then start the server.
-# PORT is provided by Render at runtime; falls back to 8000 for local Docker use.
-CMD sh -c "alembic upgrade head && python seed_data.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+# start.sh waits for DB readiness, then runs migrations → seed → uvicorn
+CMD ["./start.sh"]
+
