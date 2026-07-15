@@ -20,6 +20,7 @@ RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
 
 EXPOSE 8000
 
-# start.sh waits for DB readiness, then runs migrations → seed → uvicorn
-CMD ["./start.sh"]
+# For Railway: railway.json startCommand overrides this CMD.
+# For VPS/Docker Compose: runs migrations then starts the server.
+CMD sh -c "alembic upgrade head && python seed_data.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
 
