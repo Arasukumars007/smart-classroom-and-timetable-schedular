@@ -13,6 +13,17 @@ from app.core.config import settings
 from app.db.base import Base
 
 config = context.config
+# Debug: print the DATABASE_URL (password masked) to see why it fails to parse
+db_url = settings.DATABASE_URL
+masked_url = db_url
+if "@" in db_url:
+    prefix, suffix = db_url.split("@", 1)
+    prefix_parts = prefix.split(":", 2)
+    if len(prefix_parts) > 2:
+        masked_url = f"{prefix_parts[0]}://{prefix_parts[1].split('//')[-1]}:***@{suffix}"
+    else:
+        masked_url = f"{prefix.split('//')[0]}//***:***@{suffix}"
+print(f"DEBUG: Alembic migrating database URL: {masked_url}", flush=True)
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 if config.config_file_name is not None:
