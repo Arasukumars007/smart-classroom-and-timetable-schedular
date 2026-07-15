@@ -15,7 +15,10 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# nginx:alpine automatically runs envsubst on files in /etc/nginx/templates/
+# This lets Railway inject $PORT at runtime (Railway uses a dynamic port).
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
 EXPOSE 80
 
