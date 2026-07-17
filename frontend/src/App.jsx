@@ -9,6 +9,7 @@ import AdminLayout from './components/layout/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import DepartmentsPage from './pages/admin/DepartmentsPage'
 import CoursesPage from './pages/admin/CoursesPage'
+import SemestersPage from './pages/admin/SemestersPage'
 import SubjectsPage from './pages/admin/SubjectsPage'
 import ClassroomsPage from './pages/admin/ClassroomsPage'
 import FacultyPage from './pages/admin/FacultyPage'
@@ -59,6 +60,7 @@ export default function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="departments" element={<DepartmentsPage />} />
           <Route path="courses" element={<CoursesPage />} />
+          <Route path="semesters" element={<SemestersPage />} />
           <Route path="subjects" element={<SubjectsPage />} />
           <Route path="classrooms" element={<ClassroomsPage />} />
           <Route path="faculty" element={<FacultyPage />} />

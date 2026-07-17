@@ -3,7 +3,7 @@ import { useAuthStore } from '../../store/authStore'
 import {
   LayoutDashboard, Building2, BookOpen, BookMarked, DoorOpen,
   Users, GraduationCap, Calendar, BarChart3, Cpu, ChevronLeft, LogOut,
-  Clock, CalendarDays, Shield
+  Clock, CalendarDays, Shield, CalendarCheck
 } from 'lucide-react'
 import clsx from 'clsx'
 
@@ -12,6 +12,7 @@ const NAV = {
     { label: 'Dashboard', icon: LayoutDashboard, to: '/admin' },
     { label: 'Departments', icon: Building2, to: '/admin/departments' },
     { label: 'Courses', icon: BookOpen, to: '/admin/courses' },
+    { label: 'Semesters', icon: CalendarCheck, to: '/admin/semesters' },
     { label: 'Subjects', icon: BookMarked, to: '/admin/subjects' },
     { label: 'Classrooms', icon: DoorOpen, to: '/admin/classrooms' },
     { label: 'Faculty', icon: Users, to: '/admin/faculty' },

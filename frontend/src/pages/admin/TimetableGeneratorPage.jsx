@@ -401,15 +401,19 @@ export default function TimetableGeneratorPage() {
             )}
           </div>
 
-          {/* Academic Year text */}
+          {/* Academic Year Dropdown */}
           <div>
-            <label className="label">Academic Year Label</label>
-            <input
-              className="input"
+            <label className="label">Academic Year</label>
+            <select
+              className="select"
               value={config.academic_year}
-              placeholder="e.g. 2024-25"
               onChange={e => setConfig({ ...config, academic_year: e.target.value })}
-            />
+            >
+              <option value="2022-23">2022-23</option>
+              <option value="2023-24">2023-24</option>
+              <option value="2024-25">2024-25</option>
+              <option value="2025-26">2025-26</option>
+            </select>
           </div>
 
           {/* Algorithm */}
