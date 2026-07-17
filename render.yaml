@@ -35,7 +35,7 @@ services:
     name: smart-classroom-frontend
     runtime: static
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/dist
+    publishPath: ./frontend/dist
     pullRequestPreviewsEnabled: false
     routes:
       - type: rewrite

@@ -20,7 +20,6 @@ RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
 
 EXPOSE 8000
 
-# For Railway: railway.json startCommand overrides this CMD.
-# For VPS/Docker Compose: runs migrations then starts the server.
-CMD sh -c "alembic upgrade head && python seed_data.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+# For VPS/Docker Compose/Render/Railway: runs start.sh which waits for the DB, runs migrations, seeds data, and starts the server.
+CMD ["./start.sh"]
 
